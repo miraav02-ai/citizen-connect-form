@@ -12,7 +12,7 @@ export type StepProps = {
 
 export function StepPelapor({ data, onChange }: StepProps) {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <Field label="Nama Lengkap" htmlFor="nama">
         <TextInput
           id="nama"
@@ -22,14 +22,14 @@ export function StepPelapor({ data, onChange }: StepProps) {
         />
       </Field>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <Field label="NIK" hint="16 digit, sesuai KTP" htmlFor="nik">
           <TextInput
             id="nik"
             inputMode="numeric"
             value={data.nik}
             onChange={(e) => onChange({ nik: e.target.value })}
-            placeholder="3201 0812 9000 0007"
+            placeholder="Contoh: 3201081290000007"
           />
         </Field>
         <Field label="No. HP" htmlFor="nohp">
@@ -38,32 +38,12 @@ export function StepPelapor({ data, onChange }: StepProps) {
             inputMode="tel"
             value={data.noHp}
             onChange={(e) => onChange({ noHp: e.target.value })}
-            placeholder="08xx xxxx xxxx"
+            placeholder="Contoh: 081234567890"
           />
         </Field>
       </div>
 
-      <Field label="Email" htmlFor="email" hint="Untuk notifikasi tindak lanjut">
-        <TextInput
-          id="email"
-          type="email"
-          value={data.email}
-          onChange={(e) => onChange({ email: e.target.value })}
-          placeholder="nama@surel.id"
-        />
-      </Field>
-
-      <Field label="Alamat" htmlFor="alamat">
-        <TextArea
-          id="alamat"
-          rows={2}
-          value={data.alamat}
-          onChange={(e) => onChange({ alamat: e.target.value })}
-          placeholder="Alamat domisili saat ini"
-        />
-      </Field>
-
-      <p className="rounded-xl bg-primary/5 px-4 py-3 text-xs font-medium leading-relaxed text-muted-foreground ring-1 ring-primary/10">
+      <p className="rounded-lg bg-secondary px-3.5 py-2.5 text-xs leading-relaxed text-muted-foreground">
         Identitas pelapor bersifat rahasia dan hanya digunakan untuk menindaklanjuti laporan Anda.
       </p>
     </div>
@@ -76,20 +56,20 @@ export function StepKategori({ data, onChange }: StepProps) {
   const aktif = KATEGORI[data.kategori] ?? Object.values(KATEGORI)[0]!;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <label className="text-xs font-bold text-muted-foreground">Kategori</label>
-        <div className="mt-2.5 flex flex-wrap gap-2">
+        <label className="text-xs font-semibold text-foreground">Kategori</label>
+        <div className="mt-2 flex flex-wrap gap-2">
           {Object.keys(KATEGORI).map((c) => (
             <button
               key={c}
               type="button"
               onClick={() => onChange({ kategori: c, jenis: "" })}
               className={cn(
-                "rounded-full px-4 py-2 text-sm font-semibold transition-all active:scale-[0.97]",
+                "rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-colors",
                 data.kategori === c
-                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
-                  : "glass-in text-muted-foreground hover:text-foreground",
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-muted-foreground hover:bg-secondary hover:text-foreground",
               )}
             >
               {c}
@@ -106,19 +86,19 @@ export function StepKategori({ data, onChange }: StepProps) {
               type="button"
               onClick={() => onChange({ jenis: j })}
               className={cn(
-                "flex items-center gap-2.5 rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all active:scale-[0.98]",
+                "flex items-center gap-2.5 rounded-lg border px-3.5 py-2.5 text-left text-[13px] transition-colors",
                 data.jenis === j
-                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                  : "glass-in text-muted-foreground hover:text-foreground",
+                  ? "border-primary bg-primary/5 font-semibold text-primary"
+                  : "border-border bg-card text-foreground hover:bg-secondary",
               )}
             >
               <span
                 className={cn(
-                  "grid size-5 shrink-0 place-items-center rounded-full border",
-                  data.jenis === j ? "border-primary-foreground/60 bg-primary-foreground/20" : "border-border",
+                  "grid size-4 shrink-0 place-items-center rounded-full border-2",
+                  data.jenis === j ? "border-primary" : "border-border",
                 )}
               >
-                {data.jenis === j && <span className="size-2 rounded-full bg-primary-foreground" />}
+                {data.jenis === j && <span className="size-2 rounded-full bg-primary" />}
               </span>
               <span className="min-w-0">{j}</span>
             </button>
@@ -131,12 +111,12 @@ export function StepKategori({ data, onChange }: StepProps) {
           id="lokasi"
           value={data.lokasi}
           onChange={(e) => onChange({ lokasi: e.target.value })}
-          placeholder="Contoh: Depan SD Negeri 3, Sukamaju"
+          placeholder="Contoh: Jl. Merdeka No. 10, RT 02/RW 03"
         />
       </Field>
 
-      <p className="rounded-xl bg-primary/5 px-4 py-3 text-xs font-medium leading-relaxed text-muted-foreground ring-1 ring-primary/10">
-        Unit tujuan: <span className="font-bold text-foreground">{aktif.unit}</span> · estimasi tanggap 2×24 jam.
+      <p className="rounded-lg bg-secondary px-3.5 py-2.5 text-xs leading-relaxed text-muted-foreground">
+        Unit tujuan: <span className="font-semibold text-foreground">{aktif.unit}</span> · estimasi tanggap 2×24 jam.
       </p>
     </div>
   );
@@ -145,14 +125,14 @@ export function StepKategori({ data, onChange }: StepProps) {
 /* ---------- Step 3 · Detail Pengaduan ---------- */
 
 const urgensiStyles: Record<Urgensi, string> = {
-  Rendah: "bg-success text-success-foreground shadow-md shadow-success/30",
-  Sedang: "bg-primary text-primary-foreground shadow-md shadow-primary/30",
-  Tinggi: "bg-warn text-warn-foreground shadow-md shadow-warn/30",
+  Rendah: "bg-success text-success-foreground",
+  Sedang: "bg-primary text-primary-foreground",
+  Tinggi: "bg-warn text-warn-foreground",
 };
 
 export function StepDetail({ data, onChange }: StepProps) {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <Field label="Judul Pengaduan" htmlFor="judul">
         <TextInput
           id="judul"
@@ -171,9 +151,7 @@ export function StepDetail({ data, onChange }: StepProps) {
           onChange={(e) => onChange({ deskripsi: e.target.value })}
           placeholder="Tuliskan kronologi kejadian…"
         />
-        <p className="mt-1.5 text-right text-[11px] font-semibold text-muted-foreground">
-          {data.deskripsi.length} / 1000 karakter
-        </p>
+        <p className="mt-1 text-right text-[11px] text-muted-foreground">{data.deskripsi.length} / 1000 karakter</p>
       </Field>
 
       <Field label="Tingkat Urgensi">
@@ -184,10 +162,8 @@ export function StepDetail({ data, onChange }: StepProps) {
               type="button"
               onClick={() => onChange({ urgensi: u })}
               className={cn(
-                "flex-1 rounded-full px-3 py-2 text-xs font-bold transition-all active:scale-[0.97] sm:flex-none sm:px-5",
-                data.urgensi === u
-                  ? urgensiStyles[u]
-                  : "glass-in text-muted-foreground hover:text-foreground",
+                "flex-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors sm:flex-none sm:px-5",
+                data.urgensi === u ? urgensiStyles[u] : "border-border bg-card text-muted-foreground hover:bg-secondary hover:text-foreground",
               )}
             >
               {u}
@@ -197,15 +173,15 @@ export function StepDetail({ data, onChange }: StepProps) {
       </Field>
 
       <Field label="Lampiran Bukti" hint="Opsional — foto atau dokumen pendukung">
-        <div className="glass-in mt-1.5 flex items-center gap-3 rounded-2xl p-4 transition hover:bg-card/80">
-          <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
-            <Paperclip className="size-5" />
+        <div className="mt-1.5 flex items-center gap-3 rounded-lg border border-dashed border-border bg-card p-3 transition-colors hover:bg-secondary">
+          <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+            <Paperclip className="size-4" />
           </span>
           <label htmlFor="lampiran" className="min-w-0 flex-1 cursor-pointer">
-            <span className="block truncate text-sm font-semibold text-foreground">
+            <span className="block truncate text-[13px] font-medium text-foreground">
               {data.lampiran?.name ?? "Tambah foto bukti"}
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-[11px] text-muted-foreground">
               {data.lampiran ? `${data.lampiran.size} · ditambahkan` : "JPG atau PNG, hingga 5 MB"}
             </span>
           </label>
@@ -217,7 +193,7 @@ export function StepDetail({ data, onChange }: StepProps) {
                 e.preventDefault();
                 onChange({ lampiran: null });
               }}
-              className="grid size-8 shrink-0 place-items-center rounded-full text-muted-foreground transition hover:bg-primary/10 hover:text-foreground"
+              className="grid size-8 shrink-0 place-items-center rounded-lg text-muted-foreground transition hover:bg-primary/10 hover:text-foreground"
             >
               <X className="size-4" />
             </button>
@@ -252,26 +228,26 @@ function ReviewBlock({
   note?: string;
 }) {
   return (
-    <div className="glass-in rounded-2xl p-4">
+    <div className="panel-in rounded-lg p-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
         <button
           type="button"
           onClick={onEdit}
-          className="shrink-0 text-xs font-bold text-primary transition hover:text-primary/80"
+          className="shrink-0 text-xs font-semibold text-primary transition hover:text-primary/80"
         >
           Ubah
         </button>
       </div>
-      <dl className="mt-3 space-y-2.5">
+      <dl className="mt-3 space-y-2">
         {rows.map(([k, v]) => (
           <div key={k} className="flex justify-between gap-4">
-            <dt className="shrink-0 text-xs font-semibold text-muted-foreground">{k}</dt>
-            <dd className="min-w-0 truncate text-right text-xs font-semibold text-foreground">{v || "—"}</dd>
+            <dt className="shrink-0 text-xs text-muted-foreground">{k}</dt>
+            <dd className="min-w-0 truncate text-right text-xs font-medium text-foreground">{v || "—"}</dd>
           </div>
         ))}
       </dl>
-      {note && <p className="mt-3 border-t border-border/60 pt-3 text-xs leading-relaxed text-muted-foreground">{note}</p>}
+      {note && <p className="mt-3 border-t border-border pt-3 text-xs leading-relaxed text-muted-foreground">{note}</p>}
     </div>
   );
 }
@@ -288,7 +264,7 @@ export function StepKonfirmasi({
   onSetuju: (v: boolean) => void;
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <ReviewBlock
         label="Data Pelapor"
         onEdit={() => onEdit(0)}
@@ -296,9 +272,7 @@ export function StepKonfirmasi({
           ["Nama", data.nama],
           ["NIK", data.nik],
           ["No. HP", data.noHp],
-          ["Email", data.email],
         ]}
-        note={data.alamat}
       />
       <ReviewBlock
         label="Kategori & Lokasi"
@@ -320,7 +294,7 @@ export function StepKonfirmasi({
         note={data.deskripsi}
       />
 
-      <label className="glass-in flex cursor-pointer items-start gap-3 rounded-2xl p-4 transition hover:bg-card/80">
+      <label className="panel-in flex cursor-pointer items-start gap-3 rounded-lg p-4">
         <input
           type="checkbox"
           checked={setuju}
@@ -338,20 +312,29 @@ export function StepKonfirmasi({
 
 export function SuccessPanel({ ticket, onReset }: { ticket: string; onReset: () => void }) {
   return (
-    <div className="glass rise mx-auto max-w-xl rounded-3xl p-8 text-center">
-      <div className="mx-auto grid size-16 place-items-center rounded-full bg-success/15 text-success">
-        <CheckCircle2 className="size-8" />
+    <div className="panel rise mx-auto max-w-xl rounded-2xl p-8 text-center">
+      <div className="mx-auto grid size-14 place-items-center rounded-full bg-success/10 text-success">
+        <CheckCircle2 className="size-7" />
       </div>
-      <h2 className="mt-5 text-2xl font-extrabold tracking-tight text-foreground">Pengaduan Terkirim</h2>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+      <h2 className="mt-4 text-xl font-bold tracking-tight text-foreground">Pengaduan Terkirim</h2>
+      <p className="mx-auto mt-1.5 max-w-sm text-sm leading-relaxed text-muted-foreground">
         Pengaduan Anda telah diteruskan ke unit yang berwenang. Simpan nomor tiket berikut untuk memantau status
         tindak lanjut.
       </p>
-      <div className="glass-in mt-5 rounded-2xl px-4 py-3">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Nomor Tiket</p>
-        <p className="mt-0.5 text-xl font-extrabold tracking-wide text-primary">{ticket}</p>
+      <div className="panel-in mx-auto mt-5 w-fit rounded-lg px-5 py-3">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Nomor Tiket</p>
+        <p className="mt-0.5 text-lg font-bold tracking-wide text-primary">{ticket}</p>
       </div>
       <p className="mt-4 text-xs text-muted-foreground">Estimasi tanggap pertama: 2×24 jam kerja.</p>
+      <div className="mt-6">
+        <button
+          type="button"
+          onClick={onReset}
+          className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
+        >
+          Buat pengaduan baru
+        </button>
+      </div>
     </div>
   );
 }
