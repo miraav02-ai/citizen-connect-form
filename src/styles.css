@@ -74,7 +74,7 @@
   --ring: oklch(0.585 0.233 277.12);
   --success: oklch(0.66 0.16 162.48);
   --success-foreground: oklch(0.98 0.005 160);
-  --warn: oklch(0.68 0.16 70.08);
+  --warn: oklch(0.62 0.15 55);
   --warn-foreground: oklch(0.98 0.02 80);
   --glow-sky: oklch(0.746 0.16 232.661);
   --glow-violet: oklch(0.78 0.13 305);
