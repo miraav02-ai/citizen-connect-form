@@ -99,9 +99,6 @@
     font-weight: 400;
   }
 
-  &::placeholder::placeholder {
-    opacity: 1;
-  }
 
   &:focus-visible {
     outline: 2px solid oklch(0.473 0.222 273.57 / 0.35);
