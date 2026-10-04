@@ -144,7 +144,7 @@ function Index() {
                   </Button>
                   {step < 3 ? (
                     <Button onClick={() => setStep((s) => Math.min(3, s + 1))} disabled={!canContinue}>
-                      Lanjut ke {STEPS[step + 1].title}
+                      Lanjut ke {STEPS[step + 1]!.title}
                     </Button>
                   ) : (
                     <Button onClick={submit} disabled={!canContinue}>
