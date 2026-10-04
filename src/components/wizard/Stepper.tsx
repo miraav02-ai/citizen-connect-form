@@ -65,7 +65,7 @@ export function MobileStepper({ current }: { current: number }) {
         <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
           Langkah <span className="text-primary">{current + 1}</span> dari {STEPS.length}
         </p>
-        <p className="truncate text-xs font-bold text-foreground">{STEPS[current].title}</p>
+        <p className="truncate text-xs font-bold text-foreground">{STEPS[current]!.title}</p>
       </div>
       <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-border">
         <div

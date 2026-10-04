@@ -58,7 +58,7 @@ function Index() {
     setTicket(null);
   };
 
-  const ActiveStep = stepComponents[step];
+  const ActiveStep = step < 3 ? stepComponents[step]! : null;
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -117,7 +117,7 @@ function Index() {
                       Langkah {step + 1} dari {STEPS.length}
                     </p>
                     <h2 className="mt-1 truncate text-xl font-extrabold tracking-tight text-foreground">
-                      {STEPS[step].title}
+                      {STEPS[step]!.title}
                     </h2>
                   </div>
                   <span className="hidden shrink-0 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success sm:block">
@@ -126,7 +126,7 @@ function Index() {
                 </div>
 
                 <div key={step} className="rise">
-                  {step < 3 ? (
+                  {ActiveStep ? (
                     <ActiveStep data={data} onChange={onChange} />
                   ) : (
                     <StepKonfirmasi

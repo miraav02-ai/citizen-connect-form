@@ -73,7 +73,7 @@ export function StepPelapor({ data, onChange }: StepProps) {
 /* ---------- Step 2 · Kategori & Jenis Masalah ---------- */
 
 export function StepKategori({ data, onChange }: StepProps) {
-  const aktif = KATEGORI[data.kategori] ?? Object.values(KATEGORI)[0];
+  const aktif = KATEGORI[data.kategori] ?? Object.values(KATEGORI)[0]!;
 
   return (
     <div className="space-y-6">
