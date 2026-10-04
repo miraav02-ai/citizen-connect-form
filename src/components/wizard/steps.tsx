@@ -1,43 +1,56 @@
 import { CheckCircle2, Paperclip, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { KATEGORI, URGENTI, type ComplaintData, type Urgensi } from "@/lib/wizard-data";
+import { KATEGORI, onlyDigits, URGENTI, type ComplaintData, type Urgensi } from "@/lib/wizard-data";
 import { Field, TextArea, TextInput } from "@/components/ui/inputs";
 
 export type StepProps = {
   data: ComplaintData;
   onChange: (patch: Partial<ComplaintData>) => void;
+  errors: Record<string, string>;
+  touch: (key: string) => void;
 };
 
 /* ---------- Step 1 · Data Pelapor ---------- */
 
-export function StepPelapor({ data, onChange }: StepProps) {
+export function StepPelapor({ data, onChange, errors, touch }: StepProps) {
   return (
     <div className="space-y-4">
-      <Field label="Nama Lengkap" htmlFor="nama">
+      <Field label="Nama Lengkap" htmlFor="nama" required error={errors.nama}>
         <TextInput
           id="nama"
           value={data.nama}
+          maxLength={100}
+          autoComplete="name"
+          aria-invalid={Boolean(errors.nama)}
           onChange={(e) => onChange({ nama: e.target.value })}
+          onBlur={() => touch("nama")}
           placeholder="Nama sesuai KTP"
         />
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="NIK" hint="16 digit, sesuai KTP" htmlFor="nik">
+        <Field label="NIK" hint="16 digit, sesuai KTP" htmlFor="nik" required error={errors.nik}>
           <TextInput
             id="nik"
             inputMode="numeric"
+            autoComplete="off"
             value={data.nik}
-            onChange={(e) => onChange({ nik: e.target.value })}
+            aria-invalid={Boolean(errors.nik)}
+            onChange={(e) => onChange({ nik: onlyDigits(e.target.value, 16) })}
+            onBlur={() => touch("nik")}
             placeholder="Contoh: 3201081290000007"
           />
         </Field>
-        <Field label="No. HP" htmlFor="nohp">
+        <Field label="No. HP" hint="Diawali 08, 10–13 digit" htmlFor="nohp" required error={errors.noHp}>
           <TextInput
             id="nohp"
+            type="tel"
             inputMode="tel"
+            autoComplete="tel"
             value={data.noHp}
-            onChange={(e) => onChange({ noHp: e.target.value })}
+            aria-invalid={Boolean(errors.noHp)}
+            onChange={(e) => onChange({ noHp: onlyDigits(e.target.value, 13) })}
+            onBlur={() => touch("noHp")}
             placeholder="Contoh: 081234567890"
           />
         </Field>
