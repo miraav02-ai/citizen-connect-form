@@ -65,13 +65,15 @@ export function StepPelapor({ data, onChange, errors, touch }: StepProps) {
 
 /* ---------- Step 2 · Kategori & Jenis Masalah ---------- */
 
-export function StepKategori({ data, onChange }: StepProps) {
-  const aktif = KATEGORI[data.kategori] ?? Object.values(KATEGORI)[0]!;
+export function StepKategori({ data, onChange, errors }: StepProps) {
+  const aktif = KATEGI(data.kategori);
 
   return (
     <div className="space-y-5">
       <div>
-        <label className="text-xs font-semibold text-foreground">Kategori</label>
+        <label className="text-xs font-semibold text-foreground">
+          Kategori<span className="ml-0.5 text-destructive">*</span>
+        </label>
         <div className="mt-2 flex flex-wrap gap-2">
           {Object.keys(KATEGORI).map((c) => (
             <button
@@ -89,9 +91,14 @@ export function StepKategori({ data, onChange }: StepProps) {
             </button>
           ))}
         </div>
+        {errors.kategori && (
+          <p role="alert" className="mt-1.5 text-[11px] font-medium text-destructive">
+            {errors.kategori}
+          </p>
+        )}
       </div>
 
-      <Field label="Jenis masalah" hint="Pilih yang paling sesuai">
+      <Field label="Jenis masalah" hint="Pilih yang paling sesuai" required error={errors.jenis}>
         <div className="grid gap-2 sm:grid-cols-2">
           {aktif.jenis.map((j) => (
             <button
