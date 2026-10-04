@@ -15,7 +15,8 @@
   React memory on the single `/` route (`useState` in `src/routes/index.tsx`);
   no backend, database, auth, API, or integrations unless the user asks for
   them — the user explicitly scoped the build to UI/UX only.
-- Design system "Bento glass civic" (chosen by user from design directions):
-  Plus Jakarta Sans, indigo `--primary` (#4f46e5), frosted `glass`/`glass-in`
-  utilities, soft glow backdrop. All colors flow from oklch tokens in
-  `src/styles.css` — never hardcode color utilities in components.
+- Design system "clean civic form" (user-restyle, replaces the earlier "Bento
+  glass civic"): Plus Jakarta Sans, indigo `--primary` (#4f46e5), plain white
+  `panel`/`panel-in` utilities — no gradients, glows, or backdrop blur. All
+  colors flow from oklch tokens in `src/styles.css` — never hardcode color
+  utilities in components.
