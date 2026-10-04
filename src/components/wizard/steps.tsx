@@ -66,7 +66,7 @@ export function StepPelapor({ data, onChange, errors, touch }: StepProps) {
 /* ---------- Step 2 · Kategori & Jenis Masalah ---------- */
 
 export function StepKategori({ data, onChange, errors }: StepProps) {
-  const aktif = KATEGI(data.kategori);
+  const aktif = KATEGORI[data.kategori] ?? Object.values(KATEGORI)[0]!;
 
   return (
     <div className="space-y-5">
@@ -150,25 +150,36 @@ const urgensiStyles: Record<Urgensi, string> = {
   Tinggi: "bg-warn text-warn-foreground",
 };
 
-export function StepDetail({ data, onChange }: StepProps) {
+export function StepDetail({ data, onChange, errors, touch }: StepProps) {
   return (
     <div className="space-y-4">
-      <Field label="Judul Pengaduan" htmlFor="judul">
+      <Field label="Judul Pengaduan" htmlFor="judul" required error={errors.judul} hint="Minimal 10 karakter">
         <TextInput
           id="judul"
           value={data.judul}
+          maxLength={120}
+          aria-invalid={Boolean(errors.judul)}
           onChange={(e) => onChange({ judul: e.target.value })}
+          onBlur={() => touch("judul")}
           placeholder="Ringkas masalah dalam satu kalimat"
         />
       </Field>
 
-      <Field label="Deskripsi Kronologi" htmlFor="deskripsi" hint="Jelaskan apa yang terjadi, sejak kapan, dan dampaknya">
+      <Field
+        label="Deskripsi Kronologi"
+        htmlFor="deskripsi"
+        required
+        error={errors.deskripsi}
+        hint="Jelaskan apa yang terjadi, sejak kapan, dan dampaknya (min. 30 karakter)"
+      >
         <TextArea
           id="deskripsi"
           rows={5}
           maxLength={1000}
           value={data.deskripsi}
+          aria-invalid={Boolean(errors.deskripsi)}
           onChange={(e) => onChange({ deskripsi: e.target.value })}
+          onBlur={() => touch("deskripsi")}
           placeholder="Tuliskan kronologi kejadian…"
         />
         <p className="mt-1 text-right text-[11px] text-muted-foreground">{data.deskripsi.length} / 1000 karakter</p>
@@ -277,11 +288,13 @@ export function StepKonfirmasi({
   onEdit,
   setuju,
   onSetuju,
+  errorSetuju,
 }: {
   data: ComplaintData;
   onEdit: (step: number) => void;
   setuju: boolean;
   onSetuju: (v: boolean) => void;
+  errorSetuju?: string;
 }) {
   return (
     <div className="space-y-3">
@@ -326,6 +339,11 @@ export function StepKonfirmasi({
           dikirim lebih dari satu kali.
         </span>
       </label>
+      {errorSetuju && (
+        <p role="alert" className="text-[11px] font-medium text-destructive">
+          {errorSetuju}
+        </p>
+      )}
     </div>
   );
 }
