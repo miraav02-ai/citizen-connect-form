@@ -1,43 +1,56 @@
 import { CheckCircle2, Paperclip, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { KATEGORI, URGENTI, type ComplaintData, type Urgensi } from "@/lib/wizard-data";
+import { KATEGORI, onlyDigits, URGENTI, type ComplaintData, type Urgensi } from "@/lib/wizard-data";
 import { Field, TextArea, TextInput } from "@/components/ui/inputs";
 
 export type StepProps = {
   data: ComplaintData;
   onChange: (patch: Partial<ComplaintData>) => void;
+  errors: Record<string, string>;
+  touch: (key: string) => void;
 };
 
 /* ---------- Step 1 · Data Pelapor ---------- */
 
-export function StepPelapor({ data, onChange }: StepProps) {
+export function StepPelapor({ data, onChange, errors, touch }: StepProps) {
   return (
     <div className="space-y-4">
-      <Field label="Nama Lengkap" htmlFor="nama">
+      <Field label="Nama Lengkap" htmlFor="nama" required error={errors["nama"]}>
         <TextInput
           id="nama"
           value={data.nama}
+          maxLength={100}
+          autoComplete="name"
+          aria-invalid={Boolean(errors["nama"])}
           onChange={(e) => onChange({ nama: e.target.value })}
+          onBlur={() => touch("nama")}
           placeholder="Nama sesuai KTP"
         />
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="NIK" hint="16 digit, sesuai KTP" htmlFor="nik">
+        <Field label="NIK" hint="16 digit, sesuai KTP" htmlFor="nik" required error={errors["nik"]}>
           <TextInput
             id="nik"
             inputMode="numeric"
+            autoComplete="off"
             value={data.nik}
-            onChange={(e) => onChange({ nik: e.target.value })}
+            aria-invalid={Boolean(errors["nik"])}
+            onChange={(e) => onChange({ nik: onlyDigits(e.target.value, 16) })}
+            onBlur={() => touch("nik")}
             placeholder="Contoh: 3201081290000007"
           />
         </Field>
-        <Field label="No. HP" htmlFor="nohp">
+        <Field label="No. HP" hint="Diawali 08, 10–13 digit" htmlFor="nohp" required error={errors["noHp"]}>
           <TextInput
             id="nohp"
+            type="tel"
             inputMode="tel"
+            autoComplete="tel"
             value={data.noHp}
-            onChange={(e) => onChange({ noHp: e.target.value })}
+            aria-invalid={Boolean(errors["noHp"])}
+            onChange={(e) => onChange({ noHp: onlyDigits(e.target.value, 13) })}
+            onBlur={() => touch("noHp")}
             placeholder="Contoh: 081234567890"
           />
         </Field>
@@ -52,13 +65,15 @@ export function StepPelapor({ data, onChange }: StepProps) {
 
 /* ---------- Step 2 · Kategori & Jenis Masalah ---------- */
 
-export function StepKategori({ data, onChange }: StepProps) {
+export function StepKategori({ data, onChange, errors }: StepProps) {
   const aktif = KATEGORI[data.kategori] ?? Object.values(KATEGORI)[0]!;
 
   return (
     <div className="space-y-5">
       <div>
-        <label className="text-xs font-semibold text-foreground">Kategori</label>
+        <label className="text-xs font-semibold text-foreground">
+          Kategori<span className="ml-0.5 text-destructive">*</span>
+        </label>
         <div className="mt-2 flex flex-wrap gap-2">
           {Object.keys(KATEGORI).map((c) => (
             <button
@@ -76,9 +91,14 @@ export function StepKategori({ data, onChange }: StepProps) {
             </button>
           ))}
         </div>
+        {errors["kategori"] && (
+          <p role="alert" className="mt-1.5 text-[11px] font-medium text-destructive">
+            {errors["kategori"]}
+          </p>
+        )}
       </div>
 
-      <Field label="Jenis masalah" hint="Pilih yang paling sesuai">
+      <Field label="Jenis masalah" hint="Pilih yang paling sesuai" required error={errors["jenis"]}>
         <div className="grid gap-2 sm:grid-cols-2">
           {aktif.jenis.map((j) => (
             <button
@@ -130,25 +150,36 @@ const urgensiStyles: Record<Urgensi, string> = {
   Tinggi: "bg-warn text-warn-foreground",
 };
 
-export function StepDetail({ data, onChange }: StepProps) {
+export function StepDetail({ data, onChange, errors, touch }: StepProps) {
   return (
     <div className="space-y-4">
-      <Field label="Judul Pengaduan" htmlFor="judul">
+      <Field label="Judul Pengaduan" htmlFor="judul" required error={errors["judul"]} hint="Minimal 10 karakter">
         <TextInput
           id="judul"
           value={data.judul}
+          maxLength={120}
+          aria-invalid={Boolean(errors["judul"])}
           onChange={(e) => onChange({ judul: e.target.value })}
+          onBlur={() => touch("judul")}
           placeholder="Ringkas masalah dalam satu kalimat"
         />
       </Field>
 
-      <Field label="Deskripsi Kronologi" htmlFor="deskripsi" hint="Jelaskan apa yang terjadi, sejak kapan, dan dampaknya">
+      <Field
+        label="Deskripsi Kronologi"
+        htmlFor="deskripsi"
+        required
+        error={errors["deskripsi"]}
+        hint="Jelaskan apa yang terjadi, sejak kapan, dan dampaknya (min. 30 karakter)"
+      >
         <TextArea
           id="deskripsi"
           rows={5}
           maxLength={1000}
           value={data.deskripsi}
+          aria-invalid={Boolean(errors["deskripsi"])}
           onChange={(e) => onChange({ deskripsi: e.target.value })}
+          onBlur={() => touch("deskripsi")}
           placeholder="Tuliskan kronologi kejadian…"
         />
         <p className="mt-1 text-right text-[11px] text-muted-foreground">{data.deskripsi.length} / 1000 karakter</p>
@@ -257,11 +288,13 @@ export function StepKonfirmasi({
   onEdit,
   setuju,
   onSetuju,
+  errorSetuju,
 }: {
   data: ComplaintData;
   onEdit: (step: number) => void;
   setuju: boolean;
   onSetuju: (v: boolean) => void;
+  errorSetuju?: string | undefined;
 }) {
   return (
     <div className="space-y-3">
@@ -306,6 +339,11 @@ export function StepKonfirmasi({
           dikirim lebih dari satu kali.
         </span>
       </label>
+      {errorSetuju && (
+        <p role="alert" className="text-[11px] font-medium text-destructive">
+          {errorSetuju}
+        </p>
+      )}
     </div>
   );
 }
