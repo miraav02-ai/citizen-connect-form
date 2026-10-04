@@ -77,7 +77,7 @@ function Index() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-5 py-6 sm:px-8 sm:py-8">
+      <main className="mx-auto max-w-5xl px-4 py-5 sm:px-8 sm:py-8">
         {ticket ? (
           <SuccessPanel ticket={ticket} onReset={reset} />
         ) : (
@@ -97,7 +97,7 @@ function Index() {
               <DesktopStepper current={step} onSelect={setStep} />
 
               <section className="panel rounded-2xl p-5 sm:p-6">
-                <div className="mb-5 flex items-center justify-between gap-3 border-b border-border pb-4">
+                <div className="mb-4 flex items-center justify-between gap-3 border-b border-border pb-3.5">
                   <div className="min-w-0">
                     <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                       Langkah {step + 1} dari {STEPS.length}
@@ -128,16 +128,25 @@ function Index() {
                   )}
                 </div>
 
-                <div className="mt-6 flex items-center justify-between gap-3 border-t border-border pt-4">
-                  <Button variant="outline" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
+                <div className="mt-5 flex flex-col-reverse gap-2.5 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                  <Button
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                    onClick={() => setStep((s) => Math.max(0, s - 1))}
+                    disabled={step === 0}
+                  >
                     Kembali
                   </Button>
                   {step < 3 ? (
-                    <Button onClick={() => setStep((s) => Math.min(3, s + 1))} disabled={!canContinue}>
+                    <Button
+                      className="w-full sm:w-auto"
+                      onClick={() => setStep((s) => Math.min(3, s + 1))}
+                      disabled={!canContinue}
+                    >
                       Lanjut ke {STEPS[step + 1]!.title}
                     </Button>
                   ) : (
-                    <Button onClick={submit} disabled={!canContinue}>
+                    <Button className="w-full sm:w-auto" onClick={submit} disabled={!canContinue}>
                       Kirim Pengaduan
                       <Send className="size-4" />
                     </Button>
