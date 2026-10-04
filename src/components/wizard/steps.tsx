@@ -14,7 +14,7 @@ export type StepProps = {
 
 export function StepPelapor({ data, onChange, errors, touch }: StepProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <Field label="Nama Lengkap" htmlFor="nama" required error={errors["nama"]}>
         <TextInput
           id="nama"
@@ -81,7 +81,7 @@ export function StepKategori({ data, onChange, errors }: StepProps) {
               type="button"
               onClick={() => onChange({ kategori: c, jenis: "" })}
               className={cn(
-                "rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-colors",
+                "rounded-full border px-4 py-2 text-[13px] font-medium transition-colors",
                 data.kategori === c
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-card text-muted-foreground hover:bg-secondary hover:text-foreground",
@@ -152,7 +152,7 @@ const urgensiStyles: Record<Urgensi, string> = {
 
 export function StepDetail({ data, onChange, errors, touch }: StepProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <Field label="Judul Pengaduan" htmlFor="judul" required error={errors["judul"]} hint="Minimal 10 karakter">
         <TextInput
           id="judul"
@@ -193,7 +193,7 @@ export function StepDetail({ data, onChange, errors, touch }: StepProps) {
               type="button"
               onClick={() => onChange({ urgensi: u })}
               className={cn(
-                "flex-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors sm:flex-none sm:px-5",
+                "flex-1 rounded-full border px-3 py-2 text-xs font-semibold transition-colors sm:flex-none sm:px-5",
                 data.urgensi === u ? urgensiStyles[u] : "border-border bg-card text-muted-foreground hover:bg-secondary hover:text-foreground",
               )}
             >

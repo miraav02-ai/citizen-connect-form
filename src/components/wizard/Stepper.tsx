@@ -11,8 +11,8 @@ export function DesktopStepper({
 }) {
   return (
     <aside className="panel hidden rounded-2xl p-4 lg:block">
-      <p className="mb-4 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Langkah</p>
-      <ol className="relative space-y-5">
+      <p className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Langkah</p>
+      <ol className="relative space-y-4">
         <div className="absolute bottom-5 left-[13px] top-3 w-px bg-border" aria-hidden="true" />
         {STEPS.map((s, i) => {
           const done = i < current;
