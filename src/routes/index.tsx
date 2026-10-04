@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Send, ShieldCheck } from "lucide-react";
+import { Send } from "lucide-react";
 import { initialData, STEPS, type ComplaintData } from "@/lib/wizard-data";
 import { DesktopStepper, MobileStepper } from "@/components/wizard/Stepper";
 import { StepDetail, StepKategori, StepKonfirmasi, StepPelapor, SuccessPanel } from "@/components/wizard/steps";
@@ -61,67 +61,50 @@ function Index() {
   const ActiveStep = step < 3 ? stepComponents[step]! : null;
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Ambient glow backdrop */}
-      <div className="pointer-events-none fixed -left-24 -top-32 size-[420px] rounded-full bg-primary-soft/40 opacity-55 blur-[90px]" />
-      <div className="pointer-events-none fixed -right-28 top-1/3 size-[460px] rounded-full bg-glow-sky/30 opacity-55 blur-[90px]" />
-      <div className="pointer-events-none fixed bottom-0 left-1/3 size-[380px] rounded-full bg-glow-violet/30 opacity-55 blur-[90px]" />
-
-      <header className="relative z-10 mx-auto max-w-6xl px-5 pt-6 sm:px-8 sm:pt-8">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary text-lg font-extrabold text-primary-foreground shadow-lg shadow-primary/30">
-              L
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-extrabold tracking-tight text-foreground">Lapor Warga</p>
-              <p className="truncate text-[11px] font-medium text-muted-foreground">Form Pengaduan Masyarakat</p>
-            </div>
+    <div className="min-h-screen">
+      <header className="mx-auto max-w-5xl border-b border-border bg-card px-5 sm:px-8">
+        <div className="flex h-14 items-center gap-2.5">
+          <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+            L
           </div>
-          <div className="glass hidden shrink-0 items-center gap-2 rounded-full px-4 py-2 sm:flex">
-            <span className="size-2 rounded-full bg-success" />
-            <span className="text-xs font-semibold text-muted-foreground">Kanal pengaduan aktif</span>
-          </div>
+          <p className="truncate text-sm font-bold tracking-tight text-foreground">Lapor Warga</p>
+          <span className="ml-auto truncate text-xs font-medium text-muted-foreground">
+            Layanan Pengaduan Online
+          </span>
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-6xl px-5 py-6 sm:px-8 sm:py-8">
+      <main className="mx-auto max-w-5xl px-5 py-6 sm:px-8 sm:py-8">
         {ticket ? (
           <SuccessPanel ticket={ticket} onReset={reset} />
         ) : (
           <>
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-              <div className="min-w-0">
-                <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
-                  Sampaikan pengaduan Anda
-                </h1>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Lengkapi 4 langkah. Semua data tersimpan otomatis saat berpindah.
-                </p>
-              </div>
-              <div className="glass hidden shrink-0 items-center gap-2 rounded-2xl px-4 py-2.5 sm:flex">
-                <ShieldCheck className="size-4 text-success" />
-                <span className="text-xs font-semibold text-muted-foreground">Data tersimpan aman</span>
-              </div>
+            <div className="mb-4">
+              <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+                Sampaikan pengaduan Anda
+              </h1>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Lengkapi 4 langkah. Data tersimpan saat Anda berpindah langkah.
+              </p>
             </div>
 
             <MobileStepper current={step} />
 
-            <div className="mt-5 grid gap-5 lg:grid-cols-[300px_1fr]">
+            <div className="mt-4 grid items-start gap-4 lg:grid-cols-[224px_1fr]">
               <DesktopStepper current={step} onSelect={setStep} />
 
-              <section className="glass rounded-3xl p-6 sm:p-8">
-                <div className="mb-6 flex items-center justify-between gap-3">
+              <section className="panel rounded-2xl p-5 sm:p-6">
+                <div className="mb-5 flex items-center justify-between gap-3 border-b border-border pb-4">
                   <div className="min-w-0">
-                    <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                       Langkah {step + 1} dari {STEPS.length}
                     </p>
-                    <h2 className="mt-1 truncate text-xl font-extrabold tracking-tight text-foreground">
+                    <h2 className="mt-0.5 truncate text-base font-bold tracking-tight text-foreground">
                       {STEPS[step]!.title}
                     </h2>
                   </div>
-                  <span className="hidden shrink-0 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success sm:block">
-                    Draft disimpan
+                  <span className="hidden shrink-0 text-[11px] font-medium text-muted-foreground sm:block">
+                    Tersimpan otomatis
                   </span>
                 </div>
 
@@ -129,16 +112,11 @@ function Index() {
                   {ActiveStep ? (
                     <ActiveStep data={data} onChange={onChange} />
                   ) : (
-                    <StepKonfirmasi
-                      data={data}
-                      onEdit={setStep}
-                      setuju={setuju}
-                      onSetuju={setSetuju}
-                    />
+                    <StepKonfirmasi data={data} onEdit={setStep} setuju={setuju} onSetuju={setSetuju} />
                   )}
                 </div>
 
-                <div className="mt-7 flex items-center justify-between gap-3">
+                <div className="mt-6 flex items-center justify-between gap-3 border-t border-border pt-4">
                   <Button variant="outline" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
                     Kembali
                   </Button>

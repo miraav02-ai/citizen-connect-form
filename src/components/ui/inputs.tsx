@@ -14,10 +14,10 @@ export function Field({
 }) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="text-xs font-bold text-muted-foreground">
+      <label htmlFor={htmlFor} className="text-xs font-semibold text-foreground">
         {label}
       </label>
-      {hint && <p className="mt-0.5 text-[11px] font-medium text-muted-foreground/70">{hint}</p>}
+      {hint && <p className="mt-0.5 text-[11px] font-normal text-muted-foreground">{hint}</p>}
       <div className="mt-1.5">{children}</div>
     </div>
   );
@@ -27,7 +27,7 @@ export function TextInput({ className, ...props }: InputHTMLAttributes<HTMLInput
   return (
     <input
       className={cn(
-        "field-input w-full rounded-xl px-3.5 py-2.5 text-sm font-medium text-foreground outline-none transition",
+        "field-input w-full rounded-lg px-3 py-2 text-sm text-foreground outline-none transition",
         className,
       )}
       {...props}
@@ -39,7 +39,7 @@ export function TextArea({ className, ...props }: TextareaHTMLAttributes<HTMLTex
   return (
     <textarea
       className={cn(
-        "field-input w-full resize-none rounded-xl px-3.5 py-2.5 text-sm font-medium leading-relaxed text-foreground outline-none transition",
+        "field-input w-full resize-none rounded-lg px-3 py-2 text-sm leading-relaxed text-foreground outline-none transition",
         className,
       )}
       {...props}
