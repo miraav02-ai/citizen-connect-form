@@ -15,13 +15,13 @@ export type StepProps = {
 export function StepPelapor({ data, onChange, errors, touch }: StepProps) {
   return (
     <div className="space-y-4">
-      <Field label="Nama Lengkap" htmlFor="nama" required error={errors.nama}>
+      <Field label="Nama Lengkap" htmlFor="nama" required error={errors["nama"]}>
         <TextInput
           id="nama"
           value={data.nama}
           maxLength={100}
           autoComplete="name"
-          aria-invalid={Boolean(errors.nama)}
+          aria-invalid={Boolean(errors["nama"])}
           onChange={(e) => onChange({ nama: e.target.value })}
           onBlur={() => touch("nama")}
           placeholder="Nama sesuai KTP"
@@ -29,26 +29,26 @@ export function StepPelapor({ data, onChange, errors, touch }: StepProps) {
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="NIK" hint="16 digit, sesuai KTP" htmlFor="nik" required error={errors.nik}>
+        <Field label="NIK" hint="16 digit, sesuai KTP" htmlFor="nik" required error={errors["nik"]}>
           <TextInput
             id="nik"
             inputMode="numeric"
             autoComplete="off"
             value={data.nik}
-            aria-invalid={Boolean(errors.nik)}
+            aria-invalid={Boolean(errors["nik"])}
             onChange={(e) => onChange({ nik: onlyDigits(e.target.value, 16) })}
             onBlur={() => touch("nik")}
             placeholder="Contoh: 3201081290000007"
           />
         </Field>
-        <Field label="No. HP" hint="Diawali 08, 10–13 digit" htmlFor="nohp" required error={errors.noHp}>
+        <Field label="No. HP" hint="Diawali 08, 10–13 digit" htmlFor="nohp" required error={errors["noHp"]}>
           <TextInput
             id="nohp"
             type="tel"
             inputMode="tel"
             autoComplete="tel"
             value={data.noHp}
-            aria-invalid={Boolean(errors.noHp)}
+            aria-invalid={Boolean(errors["noHp"])}
             onChange={(e) => onChange({ noHp: onlyDigits(e.target.value, 13) })}
             onBlur={() => touch("noHp")}
             placeholder="Contoh: 081234567890"
@@ -91,14 +91,14 @@ export function StepKategori({ data, onChange, errors }: StepProps) {
             </button>
           ))}
         </div>
-        {errors.kategori && (
+        {errors["kategori"] && (
           <p role="alert" className="mt-1.5 text-[11px] font-medium text-destructive">
-            {errors.kategori}
+            {errors["kategori"]}
           </p>
         )}
       </div>
 
-      <Field label="Jenis masalah" hint="Pilih yang paling sesuai" required error={errors.jenis}>
+      <Field label="Jenis masalah" hint="Pilih yang paling sesuai" required error={errors["jenis"]}>
         <div className="grid gap-2 sm:grid-cols-2">
           {aktif.jenis.map((j) => (
             <button
@@ -153,12 +153,12 @@ const urgensiStyles: Record<Urgensi, string> = {
 export function StepDetail({ data, onChange, errors, touch }: StepProps) {
   return (
     <div className="space-y-4">
-      <Field label="Judul Pengaduan" htmlFor="judul" required error={errors.judul} hint="Minimal 10 karakter">
+      <Field label="Judul Pengaduan" htmlFor="judul" required error={errors["judul"]} hint="Minimal 10 karakter">
         <TextInput
           id="judul"
           value={data.judul}
           maxLength={120}
-          aria-invalid={Boolean(errors.judul)}
+          aria-invalid={Boolean(errors["judul"])}
           onChange={(e) => onChange({ judul: e.target.value })}
           onBlur={() => touch("judul")}
           placeholder="Ringkas masalah dalam satu kalimat"
@@ -169,7 +169,7 @@ export function StepDetail({ data, onChange, errors, touch }: StepProps) {
         label="Deskripsi Kronologi"
         htmlFor="deskripsi"
         required
-        error={errors.deskripsi}
+        error={errors["deskripsi"]}
         hint="Jelaskan apa yang terjadi, sejak kapan, dan dampaknya (min. 30 karakter)"
       >
         <TextArea
@@ -177,7 +177,7 @@ export function StepDetail({ data, onChange, errors, touch }: StepProps) {
           rows={5}
           maxLength={1000}
           value={data.deskripsi}
-          aria-invalid={Boolean(errors.deskripsi)}
+          aria-invalid={Boolean(errors["deskripsi"])}
           onChange={(e) => onChange({ deskripsi: e.target.value })}
           onBlur={() => touch("deskripsi")}
           placeholder="Tuliskan kronologi kejadian…"
@@ -294,7 +294,7 @@ export function StepKonfirmasi({
   onEdit: (step: number) => void;
   setuju: boolean;
   onSetuju: (v: boolean) => void;
-  errorSetuju?: string;
+  errorSetuju?: string | undefined;
 }) {
   return (
     <div className="space-y-3">

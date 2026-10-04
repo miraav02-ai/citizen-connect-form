@@ -123,7 +123,7 @@ function Index() {
                         setSetuju(v);
                         touch("setuju");
                       }}
-                      errorSetuju={errors.setuju}
+                      errorSetuju={errors["setuju"]}
                     />
                   )}
                 </div>

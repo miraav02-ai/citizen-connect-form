@@ -95,17 +95,17 @@ export type FieldKey = keyof typeof validators;
 export function stepErrors(step: number, data: ComplaintData, setuju: boolean): Partial<Record<string, string>> {
   const e: Record<string, string> = {};
   if (step === 0) {
-    e.nama = validators.nama(data.nama);
-    e.nik = validators.nik(data.nik);
-    e.noHp = validators.noHp(data.noHp);
+    e["nama"] = validators.nama(data.nama);
+    e["nik"] = validators.nik(data.nik);
+    e["noHp"] = validators.noHp(data.noHp);
   } else if (step === 1) {
-    e.kategori = validators.kategori(data.kategori);
-    e.jenis = validators.jenis(data.jenis);
+    e["kategori"] = validators.kategori(data.kategori);
+    e["jenis"] = validators.jenis(data.jenis);
   } else if (step === 2) {
-    e.judul = validators.judul(data.judul);
-    e.deskripsi = validators.deskripsi(data.deskripsi);
+    e["judul"] = validators.judul(data.judul);
+    e["deskripsi"] = validators.deskripsi(data.deskripsi);
   } else if (step === 3 && !setuju) {
-    e.setuju = "Centang pernyataan untuk melanjutkan.";
+    e["setuju"] = "Centang pernyataan untuk melanjutkan.";
   }
   return e;
 }
