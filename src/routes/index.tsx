@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Send } from "lucide-react";
-import { initialData, STEPS, type ComplaintData } from "@/lib/wizard-data";
+import { initialData, STEPS, stepErrors, stepValid, type ComplaintData } from "@/lib/wizard-data";
 import { DesktopStepper, MobileStepper } from "@/components/wizard/Stepper";
 import { StepDetail, StepKategori, StepKonfirmasi, StepPelapor, SuccessPanel } from "@/components/wizard/steps";
 import { Button } from "@/components/ui/button";
@@ -31,19 +31,21 @@ function Index() {
   const [data, setData] = useState<ComplaintData>(initialData);
   const [setuju, setSetuju] = useState(false);
   const [ticket, setTicket] = useState<string | null>(null);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   const onChange = (patch: Partial<ComplaintData>) => setData((d) => ({ ...d, ...patch }));
+  const touch = (key: string) => setTouched((t) => (t[key] ? t : { ...t, [key]: true }));
+
+  const allErrors = stepErrors(step, data, setuju);
+  const errors: Record<string, string> = Object.fromEntries(
+    Object.entries(allErrors).filter(([k, v]) => v && touched[k]),
+  ) as Record<string, string>;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
 
-  const canContinue = [
-    Boolean(data.nama.trim() && data.noHp.trim()),
-    Boolean(data.kategori && data.jenis),
-    Boolean(data.judul.trim() && data.deskripsi.trim()),
-    setuju,
-  ][step];
+  const canContinue = stepValid(step, data, setuju);
 
   const submit = () => {
     const now = new Date();
@@ -56,6 +58,7 @@ function Index() {
     setSetuju(false);
     setStep(0);
     setTicket(null);
+    setTouched({});
   };
 
   const ActiveStep = step < 3 ? stepComponents[step]! : null;
@@ -110,9 +113,18 @@ function Index() {
 
                 <div key={step} className="rise">
                   {ActiveStep ? (
-                    <ActiveStep data={data} onChange={onChange} />
+                    <ActiveStep data={data} onChange={onChange} errors={errors} touch={touch} />
                   ) : (
-                    <StepKonfirmasi data={data} onEdit={setStep} setuju={setuju} onSetuju={setSetuju} />
+                    <StepKonfirmasi
+                      data={data}
+                      onEdit={setStep}
+                      setuju={setuju}
+                      onSetuju={(v) => {
+                        setSetuju(v);
+                        touch("setuju");
+                      }}
+                      errorSetuju={errors.setuju}
+                    />
                   )}
                 </div>
 
